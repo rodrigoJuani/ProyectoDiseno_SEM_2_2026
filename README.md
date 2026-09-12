@@ -40,7 +40,6 @@ ProyectoDiseno_SEM_2_2026/
 │
 ├── BdD_DEFINITIVA_7.sql
 ├── .gitignore
-├── .venv/
 └── README.md
 ```
 
@@ -114,7 +113,7 @@ Abre VS Code y en el panel de **Extensiones** (Ctrl + Shift + X) instala:
 - **ES7+ React/Redux/React-Native snippets** — `dsznajder.es7-react-js-snippets`
 - **Auto Rename Tag** — `formulahendry.auto-rename-tag`
 - **Path Intellisense** — `christian-kohler.path-intellisense`
-- **GitLens** — `eamodio.gitlens`
+
 - **Thunder Client** o **REST Client** — para probar la API sin Postman
 
 > Puedes instalarlas desde la terminal con:
@@ -133,22 +132,70 @@ Abre VS Code y en el panel de **Extensiones** (Ctrl + Shift + X) instala:
 
 Antes de ejecutar el backend, PostgreSQL debe estar instalado y ejecutándose.
 
-1. Abre **pgAdmin** o **psql**.
-2. Crea una base de datos (por ejemplo `compost`).
-3. Ejecuta el archivo:
+1. Abre pgAdmin
+Búscalo en el menú de inicio de Windows o en el escritorio. Es la herramienta oficial de PostgreSQL y se instala junto con PostgreSQL.
 
-```text
-BdD_DEFINITIVA_7.sql
-```
+2. Conéctate al servidor
+Al abrirlo, te pedirá la contraseña maestra (la que pusiste cuando instalaste PostgreSQL).
+Si no la recuerdas, suele ser postgres o la que hayas definido.
 
-Este archivo contiene la estructura y los datos necesarios de la base de datos.
+En el panel izquierdo verás algo así:
 
-Desde `psql` puedes hacerlo con:
+text
+Servers
+└── PostgreSQL 16
+    ├── Databases
+    ├── Login/Group Roles
+    └── ...
+Si no ves el servidor, haz clic derecho en Servers → Register → Server y complétalo:
 
-```bash
-psql -U postgres -d compost -f BdD_DEFINITIVA_7.sql
-```
+Name: localhost
 
+Host: localhost
+
+Port: 5432
+
+Username: postgres
+
+Password: tu contraseña
+
+3. Crea la base de datos compost
+En el panel izquierdo, despliega Databases.
+
+Haz clic derecho sobre Databases → Create → Database…
+
+En el campo Database, escribe: compost
+
+Pulsa Save.
+
+Aparecerá compost en la lista de bases de datos.
+
+4. Abre la Query Tool
+Haz clic derecho sobre la base compost.
+
+Selecciona Query Tool.
+
+Se abrirá una pestaña nueva en el panel derecho, con un editor de SQL vacío.
+
+5. Carga el archivo SQL
+En la barra superior de la Query Tool, haz clic en el icono de carpeta (Open File).
+
+Navega hasta tu archivo:
+
+text
+D:\carpeta_rodri_2_26\ProyectoDiseno_SEM_2_2026\BdD_DEFINITIVA_7.sql
+Selecciónalo y pulsa Open.
+
+Verás todo el contenido SQL cargado en el editor.
+
+6. Ejecuta el script
+Pulsa el botón ▶️ (Play / Execute) o presiona F5.
+
+Abajo aparecerá un panel llamado Messages con algo así:
+
+text
+Query returned successfully...
+Si hay errores, los verás en rojo. Léelos con cuidado (suelen ser por datos duplicados si ya ejecutaste el script antes).
 ---
 
 # 6. Configurar el entorno virtual de Python (`.venv`)
@@ -160,11 +207,19 @@ El proyecto incluye una carpeta `.venv/`, que es un **entorno virtual de Python*
 > Sirve si vas a usar scripts auxiliares en Python (por ejemplo, generar datos,
 > procesar la base de datos, etc.).
 
-### 6.1 Activar el entorno virtual
+### 6.1 Crear el entorno virtual desde cero (si no existe)
+
+```bash
+python -m venv .venv --without-pip
+```
+
+
+
+### 6.2 Activar el entorno virtual
 
 **En Windows PowerShell:**
 
-```powershell
+```powershell o en el mismo visual estudio debes estar dentro de 'PS C:\Users\pc\Desktop\ProyectoDiseno_SEM_2_2026>'
 .\.venv\Scripts\Activate.ps1
 ```
 
@@ -182,19 +237,13 @@ y vuelve a intentar activar.
 .venv\Scripts\activate.bat
 ```
 
-**En Git Bash / WSL / Linux / macOS:**
-
-```bash
-source .venv/bin/activate
-```
-
 Cuando esté activado, verás algo así al inicio de la terminal:
 
 ```text
 (.venv) PS D:\carpeta_rodri_2_26\ProyectoDiseno_SEM_2_2026>
 ```
 
-### 6.2 Desactivar el entorno virtual
+### 6.3 Desactivar el entorno virtual
 
 Cuando termines de usarlo:
 
@@ -204,13 +253,6 @@ deactivate
 
 El prefijo `(.venv)` desaparecerá.
 
-### 6.3 Crear el entorno virtual desde cero (si no existe)
-
-```bash
-python -m venv .venv
-```
-
-Y luego actívalo como se indicó arriba.
 
 ### 6.4 Instalar dependencias de Python en el entorno
 
@@ -265,7 +307,7 @@ DB_PASSWORD=tu_contraseña
 
 # 8. Instalar las dependencias del BACKEND
 
-Desde `programa/backend`:
+Desde `programa/backend`(en visual studio debes ir a esa ruta):
 
 ```bash
 npm install
@@ -280,7 +322,7 @@ Express, `pg`, CORS, dotenv, entre otras.
 
 **El backend debe ejecutarse primero**, porque el frontend consume su API.
 
-Desde `programa/backend`:
+Desde `programa/backend`(en visual studio debes ir a esa ruta):
 
 ```bash
 npm run dev
@@ -309,7 +351,7 @@ Deja la Terminal 1 con el backend corriendo.
 Abre una **segunda terminal** en VS Code (**Terminal → New Terminal**) y ve a:
 
 ```bash
-cd programa/frontend
+cd programa/frontend(en visual studio debes ir a esa ruta)
 ```
 
 Instala las dependencias:
@@ -357,9 +399,11 @@ http://localhost:5173
         ↓
 8. Al terminar → deactivate (si activaste .venv)
 ```
-
 ---
 
+
+
+#YA NO ES NECESARIO LO DE ABAJO(BORRAR?)
 # 12. Comandos rápidos
 
 ## Backend (Terminal 1)
