@@ -1,18 +1,4 @@
-Claro. Para que el README quede **más claro para otra persona que descargue el proyecto desde GitHub**, conviene indicar explícitamente:
-
-1. Qué instalar antes de comenzar.
-2. Que **primero debe ejecutarse el backend**.
-3. Cómo instalar las dependencias del backend.
-4. Cómo configurar `.env`.
-5. Cómo preparar PostgreSQL.
-6. Después ejecutar el frontend.
-7. Que backend y frontend deben quedar corriendo en **dos terminales diferentes**.
-8. Cómo activar `.venv`, aclarando que es opcional si no se utiliza Python.
-
-Puedes reemplazar tu README por este:
-
-````markdown
-# Proyecto Compost PostgreSQL
+# ProyectoDiseno_SEM_2_2026
 
 Proyecto desarrollado con **React + TypeScript** para el frontend,
 **Node.js + Express** para el backend y **PostgreSQL** como sistema de
@@ -31,13 +17,14 @@ gestión de base de datos.
 - pg
 - dotenv
 - cors
+- Python (solo para el entorno virtual `.venv`)
 
 ---
 
 ## Estructura del proyecto
 
 ```text
-proyectCompostgresSQL/
+ProyectoDiseno_SEM_2_2026/
 ├── programa/
 │   ├── backend/
 │   │   ├── src/
@@ -53,46 +40,49 @@ proyectCompostgresSQL/
 │
 ├── BdD_DEFINITIVA_7.sql
 ├── .gitignore
+├── .venv/
 └── README.md
-````
+```
 
 ---
 
-# Requisitos previos
+# 1. Requisitos previos (qué debes descargar)
 
 Antes de ejecutar el proyecto se deben instalar los siguientes programas:
 
-* **Node.js**
-* **npm** (se instala junto con Node.js)
-* **PostgreSQL**
-* **Git**
+| Programa | Para qué sirve | Enlace de descarga |
+|---|---|---|
+| **Node.js** (LTS) | Ejecutar backend y frontend | https://nodejs.org/ |
+| **npm** | Viene incluido con Node.js | — |
+| **PostgreSQL** | Base de datos | https://www.postgresql.org/download/ |
+| **Git** | Clonar y versionar el proyecto | https://git-scm.com/downloads |
+| **Python** (3.10 o superior) | Solo si vas a usar `.venv` | https://www.python.org/downloads/ |
+| **VS Code** | Editor recomendado | https://code.visualstudio.com/ |
 
-Se recomienda utilizar una versión reciente de Node.js.
+> ⚠️ Al instalar **Python en Windows**, marca la casilla **"Add Python to PATH"**.
+> Al instalar **Node.js**, acepta las opciones por defecto.
 
-Para comprobar que Node.js y npm están instalados:
+---
+
+# 2. Verificar que todo está instalado
+
+Abre una terminal (PowerShell en Windows) y ejecuta:
 
 ```bash
 node --version
 npm --version
-```
-
-Para comprobar PostgreSQL:
-
-```bash
 psql --version
-```
-
-Para comprobar Git:
-
-```bash
 git --version
+python --version
 ```
+
+Si algún comando **no devuelve una versión**, significa que ese programa
+no está instalado o no está en el PATH. Reinicia la terminal después de
+instalar algo.
 
 ---
 
-# Instalación y ejecución del proyecto
-
-## 1. Clonar el repositorio
+# 3. Clonar el repositorio
 
 Desde una terminal:
 
@@ -103,18 +93,49 @@ git clone URL_DEL_REPOSITORIO
 Entrar a la carpeta del proyecto:
 
 ```bash
-cd proyectCompostgresSQL
+cd ProyectoDiseno_SEM_2_2026
 ```
 
 ---
 
-# 2. Configurar PostgreSQL
+# 4. Extensiones recomendadas de VS Code
 
-Antes de ejecutar el backend, se debe tener PostgreSQL instalado y ejecutándose.
+Abre VS Code y en el panel de **Extensiones** (Ctrl + Shift + X) instala:
 
-Crear una base de datos en PostgreSQL.
+### Obligatorias
+- **ESLint** — `dbaeumer.vscode-eslint`
+- **Prettier - Code formatter** — `esbenp.prettier-vscode`
+- **Python** — `ms-python.python`
+- **Pylance** — `ms-python.vscode-pylance`
+- **PostgreSQL** — `ms-ossdata.vscode-pgsql` (o **SQLTools** + driver PostgreSQL)
+- **DotENV** — `mikestead.dotenv` (resalta los `.env`)
 
-Después ejecutar el archivo:
+### Muy recomendadas
+- **ES7+ React/Redux/React-Native snippets** — `dsznajder.es7-react-js-snippets`
+- **Auto Rename Tag** — `formulahendry.auto-rename-tag`
+- **Path Intellisense** — `christian-kohler.path-intellisense`
+- **GitLens** — `eamodio.gitlens`
+- **Thunder Client** o **REST Client** — para probar la API sin Postman
+
+> Puedes instalarlas desde la terminal con:
+> ```bash
+> code --install-extension dbaeumer.vscode-eslint
+> code --install-extension esbenp.prettier-vscode
+> code --install-extension ms-python.python
+> code --install-extension ms-python.vscode-pylance
+> code --install-extension mikestead.dotenv
+> code --install-extension eamodio.gitlens
+> ```
+
+---
+
+# 5. Configurar PostgreSQL
+
+Antes de ejecutar el backend, PostgreSQL debe estar instalado y ejecutándose.
+
+1. Abre **pgAdmin** o **psql**.
+2. Crea una base de datos (por ejemplo `compost`).
+3. Ejecuta el archivo:
 
 ```text
 BdD_DEFINITIVA_7.sql
@@ -122,9 +143,92 @@ BdD_DEFINITIVA_7.sql
 
 Este archivo contiene la estructura y los datos necesarios de la base de datos.
 
+Desde `psql` puedes hacerlo con:
+
+```bash
+psql -U postgres -d compost -f BdD_DEFINITIVA_7.sql
+```
+
 ---
 
-# 3. Configurar las variables de entorno del backend
+# 6. Configurar el entorno virtual de Python (`.venv`)
+
+El proyecto incluye una carpeta `.venv/`, que es un **entorno virtual de Python**.
+
+> **Nota importante:** el backend del proyecto está hecho con **Node.js + Express**,
+> por lo que **el `.venv` no es obligatorio** para ejecutar el backend.
+> Sirve si vas a usar scripts auxiliares en Python (por ejemplo, generar datos,
+> procesar la base de datos, etc.).
+
+### 6.1 Activar el entorno virtual
+
+**En Windows PowerShell:**
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+Si PowerShell bloquea la ejecución de scripts, primero ejecuta:
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+y vuelve a intentar activar.
+
+**En Windows CMD:**
+
+```cmd
+.venv\Scripts\activate.bat
+```
+
+**En Git Bash / WSL / Linux / macOS:**
+
+```bash
+source .venv/bin/activate
+```
+
+Cuando esté activado, verás algo así al inicio de la terminal:
+
+```text
+(.venv) PS D:\carpeta_rodri_2_26\ProyectoDiseno_SEM_2_2026>
+```
+
+### 6.2 Desactivar el entorno virtual
+
+Cuando termines de usarlo:
+
+```bash
+deactivate
+```
+
+El prefijo `(.venv)` desaparecerá.
+
+### 6.3 Crear el entorno virtual desde cero (si no existe)
+
+```bash
+python -m venv .venv
+```
+
+Y luego actívalo como se indicó arriba.
+
+### 6.4 Instalar dependencias de Python en el entorno
+
+Si tienes un `requirements.txt`:
+
+```bash
+pip install -r requirements.txt
+```
+
+Si no lo tienes y quieres congelar tus dependencias actuales:
+
+```bash
+pip freeze > requirements.txt
+```
+
+---
+
+# 7. Configurar las variables de entorno del backend
 
 Entrar a la carpeta del backend:
 
@@ -138,16 +242,13 @@ El proyecto contiene el archivo:
 .env.example
 ```
 
-Crear una copia y nombrarla:
+Crea una copia y renómbrala como:
 
 ```text
 .env
 ```
 
-El archivo `.env` debe contener las credenciales correspondientes a
-la instalación local de PostgreSQL.
-
-Ejemplo:
+El archivo `.env` debe contener las credenciales de tu PostgreSQL local:
 
 ```env
 DB_HOST=localhost
@@ -157,51 +258,29 @@ DB_USER=postgres
 DB_PASSWORD=tu_contraseña
 ```
 
-**Importante:** el archivo `.env` no debe subirse a GitHub si contiene
-contraseñas o información privada.
+> **Importante:** el archivo `.env` **no debe subirse a GitHub** si contiene
+> contraseñas. Ya está excluido por `.gitignore`.
 
 ---
 
-# 4. Instalar las dependencias del BACKEND
+# 8. Instalar las dependencias del BACKEND
 
-Este paso debe realizarse antes de ejecutar el servidor.
-
-Desde:
-
-```text
-programa/backend
-```
-
-ejecutar:
+Desde `programa/backend`:
 
 ```bash
 npm install
 ```
 
-Este comando instalará automáticamente las dependencias especificadas
-en `package.json`.
-
-Entre ellas se encuentran:
-
-* Express
-* PostgreSQL (`pg`)
-* CORS
-* dotenv
+Esto instalará automáticamente las dependencias de `package.json`:
+Express, `pg`, CORS, dotenv, entre otras.
 
 ---
 
-# 5. EJECUTAR PRIMERO EL BACKEND
+# 9. EJECUTAR PRIMERO EL BACKEND
 
-**El backend debe ejecutarse primero**, ya que el frontend necesita
-comunicarse con la API del servidor.
+**El backend debe ejecutarse primero**, porque el frontend consume su API.
 
-Desde:
-
-```text
-programa/backend
-```
-
-ejecutar:
+Desde `programa/backend`:
 
 ```bash
 npm run dev
@@ -213,78 +292,45 @@ El servidor debería iniciar en:
 http://localhost:4000
 ```
 
-La terminal debe permanecer abierta y ejecutando el backend.
-
-Ejemplo:
+Verás algo como:
 
 ```text
 API escuchando en http://localhost:4000
 ```
 
-**No cerrar esta terminal.**
+**No cierres esta terminal.**
 
 ---
 
-# 6. Abrir una SEGUNDA TERMINAL
+# 10. Abrir una SEGUNDA terminal para el FRONTEND
 
-Para ejecutar el frontend se debe abrir otra terminal.
+Deja la Terminal 1 con el backend corriendo.
 
-La primera terminal debe continuar ejecutando:
-
-```bash
-npm run dev
-```
-
-del backend.
-
-En la segunda terminal, volver a la carpeta principal del proyecto:
-
-```bash
-cd proyectCompostgresSQL
-```
-
-Entrar al frontend:
+Abre una **segunda terminal** en VS Code (**Terminal → New Terminal**) y ve a:
 
 ```bash
 cd programa/frontend
 ```
 
----
-
-# 7. Instalar las dependencias del FRONTEND
-
-Desde:
-
-```text
-programa/frontend
-```
-
-ejecutar:
+Instala las dependencias:
 
 ```bash
 npm install
 ```
 
-Este comando instalará todas las dependencias especificadas en el
-`package.json` del frontend.
-
----
-
-# 8. EJECUTAR EL FRONTEND
-
-Después de instalar las dependencias:
+Y ejecuta:
 
 ```bash
 npm run dev
 ```
 
-Vite mostrará una dirección similar a:
+Vite mostrará algo como:
 
 ```text
 Local: http://localhost:5173/
 ```
 
-Abrir esa dirección en el navegador:
+Abre esa dirección en el navegador:
 
 ```text
 http://localhost:5173
@@ -292,151 +338,77 @@ http://localhost:5173
 
 ---
 
-# 9. Ejecución completa
-
-Para que el sistema funcione correctamente deben estar ejecutándose
-**el backend y el frontend al mismo tiempo**.
-
-### TERMINAL 1 - BACKEND
-
-```bash
-cd proyectCompostgresSQL/programa/backend
-npm install
-npm run dev
-```
-
-Backend:
-
-```text
-http://localhost:4000
-```
-
----
-
-### TERMINAL 2 - FRONTEND
-
-```bash
-cd proyectCompostgresSQL/programa/frontend
-npm install
-npm run dev
-```
-
-Frontend:
-
-```text
-http://localhost:5173
-```
-
----
-
-# 10. Orden correcto para ejecutar el proyecto
-
-El orden recomendado es:
+# 11. Orden correcto para ejecutar el proyecto
 
 ```text
 1. Iniciar PostgreSQL
         ↓
 2. Verificar/configurar .env
         ↓
-3. Ejecutar el archivo BdD_DEFINITIVA_7.sql
+3. Ejecutar BdD_DEFINITIVA_7.sql
         ↓
-4. Abrir la Terminal 1
+4. (Opcional) Activar .venv si usas Python
         ↓
-5. Instalar dependencias del backend
+5. Terminal 1 → instalar y ejecutar backend
         ↓
-6. Ejecutar el backend
+6. Terminal 2 → instalar y ejecutar frontend
         ↓
-7. Abrir la Terminal 2
+7. Abrir http://localhost:5173
         ↓
-8. Instalar dependencias del frontend
-        ↓
-9. Ejecutar el frontend
-        ↓
-10. Abrir http://localhost:5173
+8. Al terminar → deactivate (si activaste .venv)
 ```
 
 ---
 
-# 11. Entorno virtual Python (.venv)
+# 12. Comandos rápidos
 
-El proyecto contiene una carpeta:
-
-```text
-.venv/
-```
-
-Esta carpeta corresponde a un entorno virtual de Python.
-
-**No es necesario subir `.venv` a GitHub.**
-
-Si se necesita utilizar el entorno virtual en Windows PowerShell:
-
-```powershell
-.\.venv\Scripts\Activate.ps1
-```
-
-Después aparecerá:
-
-```text
-(.venv)
-```
-
-al comienzo de la terminal.
-
-Si el entorno virtual no existe, se puede crear nuevamente con:
-
-```powershell
-python -m venv .venv
-```
-
-Y posteriormente activarlo:
-
-```powershell
-.\.venv\Scripts\Activate.ps1
-```
-
-> Nota: el backend de este proyecto está desarrollado con **Node.js + Express**,
-> por lo que `.venv` no es necesario para ejecutar el backend Node.js.
-
----
-
-# 12. Dependencias
-
-No es necesario subir las carpetas `node_modules` a GitHub.
-
-Después de clonar el proyecto, las dependencias se pueden instalar
-nuevamente mediante:
-
-### Backend
+## Backend (Terminal 1)
 
 ```bash
 cd programa/backend
 npm install
+npm run dev
 ```
 
-### Frontend
+Backend: `http://localhost:4000`
+
+## Frontend (Terminal 2)
 
 ```bash
 cd programa/frontend
 npm install
+npm run dev
 ```
 
-Los comandos `npm install` utilizan los archivos `package.json` y
-`package-lock.json` para instalar las dependencias necesarias.
+Frontend: `http://localhost:5173`
+
+## Entorno virtual Python
+
+Activar (PowerShell):
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+Desactivar:
+
+```bash
+deactivate
+```
 
 ---
 
 # 13. Archivos que NO deben subirse a GitHub
 
-Por seguridad y para evitar archivos innecesarios, no se deben subir:
-
 ```text
 .venv/
 node_modules/
 .env
+dist/
+build/
 ```
 
-Estos archivos están excluidos mediante `.gitignore`.
+Están excluidos por `.gitignore`.
 
 Sí se deben subir:
 
@@ -453,149 +425,54 @@ README.md
 
 ---
 
-# 14. Comandos rápidos
+# 14. Solución de problemas
 
-## Backend
-
-```bash
-cd programa/backend
-npm install
-npm run dev
-```
-
-## Frontend
-
-Abrir otra terminal:
-
-```bash
-cd programa/frontend
-npm install
-npm run dev
-```
-
-## Dirección del sistema
-
-Frontend:
-
-```text
-http://localhost:5173
-```
-
-Backend:
-
-```text
-http://localhost:4000
-```
-
----
-
-# 15. Solución de problemas
-
-### Error: `npm` no se reconoce
-
-Verificar que Node.js esté instalado:
-
+### ❌ `npm` no se reconoce
+Instala Node.js y reinicia la terminal. Comprueba con:
 ```bash
 node --version
 npm --version
 ```
 
-Si no aparece la versión, instalar Node.js y reiniciar la terminal.
-
----
-
-### Error relacionado con `node_modules`
-
-Ejecutar:
-
+### ❌ `python` no se reconoce
+Al instalar Python, marca **"Add Python to PATH"**. Comprueba con:
 ```bash
-npm install
+python --version
 ```
 
-dentro de la carpeta correspondiente.
-
-Backend:
-
-```bash
-cd programa/backend
-npm install
+### ❌ Error al activar `.venv` en PowerShell
+Ejecuta una vez:
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+Y vuelve a intentar:
+```powershell
+.\.venv\Scripts\Activate.ps1
 ```
 
-Frontend:
-
-```bash
-cd programa/frontend
-npm install
-```
-
----
-
-### Error de conexión con PostgreSQL
-
-Verificar:
-
-1. Que PostgreSQL esté ejecutándose.
+### ❌ Error de conexión con PostgreSQL
+Verifica:
+1. Que PostgreSQL esté corriendo.
 2. Que la base de datos exista.
-3. Que se haya ejecutado `BdD_DEFINITIVA_7.sql`.
-4. Que los datos del archivo `.env` sean correctos.
-5. Que el usuario y contraseña de PostgreSQL sean correctos.
-6. Que el puerto de PostgreSQL sea correcto.
+3. Que hayas ejecutado `BdD_DEFINITIVA_7.sql`.
+4. Que los datos del `.env` sean correctos.
 
----
+### ❌ El frontend no se conecta con el backend
+Verifica que el backend esté activo en `http://localhost:4000` antes de
+levantar el frontend.
 
-### El frontend no se conecta con el backend
-
-Verificar primero que el backend esté ejecutándose:
-
-```text
-http://localhost:4000
-```
-
-Después ejecutar el frontend:
-
+### ❌ Error relacionado con `node_modules`
+Ejecuta `npm install` dentro de la carpeta que corresponda:
 ```bash
-npm run dev
+cd programa/backend  && npm install
+cd programa/frontend && npm install
 ```
 
 ---
 
-# Autor
+# 15. Autor
 
 Proyecto académico desarrollado con React + TypeScript,
 Node.js + Express y PostgreSQL.
 
-````
-
-### Un detalle que te recomiendo cambiar
-
-En tu README original dices:
-
-> Proyecto desarrollado con React + TypeScript para el frontend...
-
-Eso está bien, pero por tu captura veo que tienes **dos `package.json`**: uno en `backend` y otro probablemente en `frontend`. Por eso es importante que **cada carpeta tenga su propio `npm install`**.
-
-La ejecución final quedaría muy sencilla para quien descargue tu GitHub:
-
-**Terminal 1:**
-
-```powershell
-cd programa/backend
-npm install
-npm run dev
-````
-
-**Terminal 2:**
-
-```powershell
-cd programa/frontend
-npm install
-npm run dev
-```
-
-Y luego abrir:
-
-```text
-http://localhost:5173
-```
-
-**No hace falta activar `.venv` para esta parte**, porque tu backend es Node.js, no Python.
+**Nombre del proyecto:** `ProyectoDiseno_SEM_2_2026`
